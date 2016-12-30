@@ -18,7 +18,8 @@ module.exports = {
         beatsArray: () ->
             it = new Array(this.beats)
             for onNote in @onNotes
-                it[onNote] = true
+                if onNote < this.beats
+                    it[onNote] = true
             # console.log it
             return it
     },
