@@ -5,7 +5,27 @@
         input(type="text", v-model.number='steps')
         label Measures: 
         input(type="text", v-model.number='measures')
+        label Transpose: 
+        input(type="text", v-model.number='transpose')
+        select(v-model="synth")
+            option sine
+            option sawtooth
+            option square
+            option triangle
+            option fmsine
+            option fmsawtooth
+            option fmsquare
+            option fmtriangle
+            option amsine
+            option amsawtooth
+            option amsquare
+            option amtriangle
+            option fatsine
+            option fatsawtooth
+            option fatsquare
+            option fattriangle
         line-c(:beats = "steps", :current-note="currentStep", v-for="(onNotes, pitch) in notes", :pitch = "pitch", :on-notes="onNotes", @toggle-box = "handleToggleBox")
+
         hr
 </template>
 
@@ -56,6 +76,8 @@ module.exports = {
             },
             steps: 16
             measures: 4
+            synth: "sine"
+            transpose: 0
         }
     computed: {
         currentStep: () ->
@@ -71,6 +93,20 @@ module.exports = {
         steps: () ->
             for key of this.notes
                 this.notes[key] = []
+        synth: (val) ->
+            this.player.set({
+                oscillator: {
+                    type: val
+                }
+            })
+        transpose: (val) ->
+            if isNaN(parseInt(val))
+                val = 0
+            this.player.set({
+                oscillator: {
+                    detune: val * 100
+                }
+                })
     }
     methods: {
         playNextStep: () ->
@@ -119,12 +155,12 @@ module.exports = {
         #     },
         # })
         
-        synth = new Tone.PolySynth(8, Tone.Synth).toMaster();
+        synth = new Tone.PolySynth(8, Tone.OmniSynth).toMaster();
         synth.set({
-            # "oscillator" : {
-            #     "type" : "pwm",
-            #     "modulationFrequency" : 0.2
-            # },
+            "oscillator" : {
+                "type" : this.synth
+                detune: this.transpose * 100
+            },
             "envelope" : {
                 "attack" : 0.01,
                 "decay" : 2.0,
