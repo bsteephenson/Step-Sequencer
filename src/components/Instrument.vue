@@ -1,31 +1,39 @@
 <template lang="pug">
-
+div
     .instrument
-        label Steps: 
-        input(type="text", v-model.number='steps')
-        label Measures: 
-        input(type="text", v-model.number='measures')
-        label Transpose: 
-        input(type="text", v-model.number='transpose')
-        label Velocity %: 
-        input(type="text", v-model.number='volume')
-        label Synth type: 
-        select(v-model="synth")
-            option sine
-            option sawtooth
-            option square
-            option triangle
-        label Filter Cutoff Hz: 
-        input(type="text", v-model.number='filterCutoff')
-        label Distortion %: 
-        input(type="text", v-model.number='distortion')
-        label Chorus %: 
-        input(type="text", v-model.number='chorus')
-        label Reverb %: 
-        input(type="text", v-model.number='reverbWet')
-        line-c(:beats = "steps", :current-note="currentStep", v-for="(onNotes, pitch) in notes", :pitch = "pitch", :on-notes="onNotes", @toggle-box = "handleToggleBox")
+        .controls
+            div
+                label Steps: 
+                input(type="text", v-model.number='steps')
+            div
+                label Measures: 
+                input(type="text", v-model.number='measures')
+            div
+                label Transpose (semitones): 
+                input(type="text", v-model.number='transpose')
+            div
+                label Velocity (%): 
+                input(type="text", v-model.number='volume')
+            div
+                label Synth type: 
+                select(v-model="synth")
+                    option sine
+                    option sawtooth
+                    option square
+                    option triangle
+            div
+                label Decay (seconds): 
+                input(type="text", v-model.number='decay')
+            div
+                label Filter cutoff (hz): 
+                input(type="text", v-model.number='filterCutoff')
+            //div
+                //label Reverb %: 
+                //input(type="text", v-model.number='reverbWet')
+        div.boxes
+            line-c(:beats = "steps", :current-note="currentStep", v-for="(onNotes, pitch) in notes", :pitch = "pitch", :on-notes="onNotes", @toggle-box = "handleToggleBox")
 
-        hr
+    hr   
 </template>
 
 <script lang="coffee">
@@ -78,10 +86,9 @@ module.exports = {
             synth: "sine"
             transpose: 0
             filterCutoff: 2000
-            reverbWet: 10
-            distortion: 0
-            chorus: 0
+            # reverbWet: 10
             volume: 100
+            decay: 2.0
         }
     computed: {
         currentStep: () ->
@@ -116,19 +123,15 @@ module.exports = {
                 this.filter.set({
                     frequency: val
                     })
-        reverbWet: (val) ->
-            if !isNaN(parseInt(val))
-                this.reverb.set(wet: val / 100)            
-        distortion: (val) ->
-            if !isNaN(parseInt(val))
-                this.distortionFx.set(wet: val / 100)            
-                this.distortionFx.set(distortion: val / 100)            
-        chorus: (val) ->
-            if !isNaN(parseInt(val))
-                this.chorusFx.set(wet: val / 100) 
+        # reverbWet: (val) ->
+        #     if !isNaN(parseInt(val))
+        #         this.reverb.set(wet: val / 100)            
         volume: (val) ->
             if !isNaN(parseInt(val))
                 this.player.set(volume: val / 100) 
+        decay: (val) ->
+            if !isNaN(parseInt(val))
+                this.player.set(envelope: {decay: val, release: val}) 
 
     }
     methods: {
@@ -158,7 +161,7 @@ module.exports = {
     created: () ->
 
         
-        synth = new Tone.PolySynth(8, Tone.OmniSynth)
+        synth = new Tone.PolySynth(4, Tone.OmniSynth)
 
         synth.set({
             "oscillator" : {
@@ -170,9 +173,9 @@ module.exports = {
         defaultEnv = {
             "envelope" : {
                 "attack" : 0.01,
-                "decay" : 2.0,
+                "decay" : this.decay,
                 "sustain" : 0.0,
-                "release" : 0.9,
+                "release" : this.decay,
             }
         }
 
@@ -183,21 +186,12 @@ module.exports = {
 
         this.synthPlayer = synth
 
-        this.reverb = new Tone.Freeverb()
-        this.reverb.set(wet: this.reverbWet / 100)
-
-        this.distortionFx = new Tone.Distortion()
-        this.distortionFx.set(wet: this.distortion / 100)
-        this.distortionFx.set(distortion: this.distortion / 100)
-
-        this.chorusFx = new Tone.Chorus()
-        this.chorusFx.set(wet: this.chorus / 100)
+        # this.reverb = new Tone.Freeverb()
+        # this.reverb.set(wet: this.reverbWet / 100)
 
         synth.connect(this.filter)
-        this.filter.connect(this.distortionFx)
-        this.distortionFx.connect(this.chorusFx)
-        this.chorusFx.connect(this.reverb)
-        this.reverb.connect(Tone.Master)
+        this.filter.connect(Tone.Master)
+        # this.reverb.connect(Tone.Master)
         this.player = synth
         this.player.set(volume: this.volume / 100)
         # this.nextTick()
@@ -209,4 +203,15 @@ module.exports = {
 <style lang="stylus">
 .instrument
     margin-bottom: 50px
+    display:flex
+    flex-direction: row
+
+input, select
+    margin: 10px
+.controls
+    width: 25%
+    height: 100%
+.boxes
+    width: 75%
+    
 </style>

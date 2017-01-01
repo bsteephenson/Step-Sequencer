@@ -1,6 +1,6 @@
 <template lang="pug">
-
     #app
+        h1 Music is fun
         button(@click='togglePlay') Play / Stop
         button(@click='instruments++') Add Instrument
         label BPM: 
@@ -66,13 +66,17 @@ module.exports = {
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="stylus">
+#app
+    font-family: 'Avenir', Helvetica, Arial, sans-serif
+    -webkit-font-smoothing: antialiased
+    -moz-osx-font-smoothing: grayscale
+    // text-align: center
+    color: #2c3e50
+    margin-top: 60px
+
+input, select, button
+    margin: 10px
+
+
 </style>
