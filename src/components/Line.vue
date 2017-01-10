@@ -5,12 +5,6 @@
 
 <script lang="coffee">
 
-# saw = new Wad({source : 'square'})
-# saw.setVolume(.25)
-# saw.play({pitch: "C5"})
-# saw.play({pitch: "E5"})
-# saw.play({pitch: "G5"})
-
 module.exports = {
     name: 'line'
     props: ['beats', 'currentNote', 'onNotes', 'pitch']
@@ -20,7 +14,6 @@ module.exports = {
             for onNote in @onNotes
                 if onNote < this.beats
                     it[onNote] = true
-            # console.log it
             return it
     },
     methods: {

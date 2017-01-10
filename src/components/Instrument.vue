@@ -37,22 +37,11 @@ div
 </template>
 
 <script lang="coffee">
-# import Hello from './components/Hello'
-# import LineC from './components/Line'
 
 Hello = require './Hello'
 LineC = require './Line'
 
 Tone = require('tone')
-
-# // import Wad from "web-audio-daw"
-
-# // var saw = new Wad({source : 'square'})
-# // saw.setVolume(.25)
-# // saw.play({pitch: "C5"})
-# // saw.play({pitch: "E5"})
-# // saw.play({pitch: "G5"})
-
 
 module.exports = {
     name: 'instrument',
@@ -61,16 +50,7 @@ module.exports = {
     },
     props: ['time', 'res']
     data: () ->
-        # bpm = 160
-        # measures = 8
-        # beats = 48
-        # timeBetweenBeats = (60 * 1000) / (bpm / measures * 16)
-        # console.log timeBetweenBeats, "time"
         return {
-            # notes: [
-            #     { pitch: "A3", onNotes: [0, 3, 6] }
-            #     { pitch: "B3", onNotes: [0, 4, 6] }
-            # ],
             notes : {
                 "C5" : []
                 "B4" : []
@@ -93,13 +73,10 @@ module.exports = {
     computed: {
         currentStep: () ->
             ticksPerStep = this.measures * this.res / this.steps
-            # console.log 'ticksPerStep', ticksPerStep, this.time
-            # console.log Math.floor(this.time / ticksPerStep) % this.steps, "currentStep"
             return Math.floor(this.time / ticksPerStep) % this.steps
     }
     watch: {
         currentStep: () ->
-            # console.log "time"
             this.playNextStep()
         steps: () ->
             for key of this.notes
@@ -117,12 +94,12 @@ module.exports = {
                 oscillator: {
                     detune: val * 100
                 }
-                })
+            })
         filterCutoff: (val) ->
             if !isNaN(parseInt(val))
                 this.filter.set({
                     frequency: val
-                    })
+                })
         # reverbWet: (val) ->
         #     if !isNaN(parseInt(val))
         #         this.reverb.set(wet: val / 100)            
@@ -137,15 +114,9 @@ module.exports = {
     methods: {
         playNextStep: () ->
             self = this
-            # console.log this.currentBeat, "currentBeat"
             for pitch, onNotes of this.notes
                 if (this.currentStep in onNotes)
                     this.player.triggerAttackRelease(pitch, "8n", "+0", this.volume / 100)
-                # else
-                #     this.player.stop({pitch: pitch})
-            # setTimeout(
-            #     () -> self.nextTick(),
-            #     self.timeBetweenBeats)
 
         handleToggleBox: (pitch, pos) ->
             if pos in this.notes[pitch]
@@ -160,7 +131,6 @@ module.exports = {
 
     created: () ->
 
-        
         synth = new Tone.PolySynth(4, Tone.OmniSynth)
 
         synth.set({
@@ -181,8 +151,6 @@ module.exports = {
 
         synth.set(defaultEnv)
         this.filter = new Tone.Filter(this.filterCutoff, "lowpass");
-        # synth = new Tone.Noise("pink")
-        # synth.connect(Tone.Master)
 
         this.synthPlayer = synth
 
@@ -194,8 +162,6 @@ module.exports = {
         # this.reverb.connect(Tone.Master)
         this.player = synth
         this.player.set(volume: this.volume / 100)
-        # this.nextTick()
-        # console.log(this.players)
 
 }
 </script>

@@ -8,24 +8,16 @@
         hr
 
         instrument(v-for="i in instruments", :res = "res", :time = "time")
+        a(href="https://github.com/bsteephenson/Step-Sequencer") Source
+
 </template>
 
 <script lang="coffee">
-# import Hello from './components/Hello'
-# import LineC from './components/Line'
 
 Hello = require './components/Hello'
 LineC = require './components/Line'
 Instrument = require './components/Instrument'
 
-
-# // import Wad from "web-audio-daw"
-
-# // var saw = new Wad({source : 'square'})
-# // saw.setVolume(.25)
-# // saw.play({pitch: "C5"})
-# // saw.play({pitch: "E5"})
-# // saw.play({pitch: "G5"})
 
 
 module.exports = {
@@ -60,8 +52,6 @@ module.exports = {
                 this.time == -1
                 this.isPlaying = false
     }
-    # created: () ->
-    #     this.nextTick()
 
 }
 </script>
