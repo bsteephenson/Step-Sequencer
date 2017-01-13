@@ -145,37 +145,30 @@ module.exports = {
                 this.synth = val.synth
             else
                 this.synth = "sine"
-
             if val.transpose != "none"
                 this.transpose = val.transpose
             else
                 this.transpose = 0
-
             if val.filterCutoff != "none"
                 this.filterCutoff = val.filterCutoff
             else
                 this.filterCutoff = 2000
-
             if val.decay != "none"
                 this.decay = val.decay
             else
                 this.decay = 2.0
-
             if val.attack != "none"
                 this.attack = val.attack
             else
                 this.attack = 0.01
-
             if val.release != "none"
                 this.release = val.release
             else
                 this.release = 2.0
-
             if val.sustain != "none"
                 this.sustain = val.sustain
             else
                 this.sustain = 0.0
-
     }
     methods: {
         playNextStep: () ->
