@@ -32,8 +32,8 @@ module.exports = {
 .box
     background-color: alpha(black, .05)
     margin: 10px
-    height: 50px
-    width: 50px
+    height: 40px
+    width: 40px
     cursor: pointer
     &.active
         background-color:alpha(black, .25)
