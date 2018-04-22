@@ -22,6 +22,9 @@ div
                     option square
                     option triangle
             div
+                label Attack (seconds): 
+                input(type="text", v-model.number='attack')
+            div
                 label Decay (seconds): 
                 input(type="text", v-model.number='decay')
             div
@@ -65,9 +68,10 @@ module.exports = {
             measures: 4
             synth: "sine"
             transpose: 0
-            filterCutoff: 2000
+            filterCutoff: 3000
             # reverbWet: 10
             volume: 100
+            attack: 0.01
             decay: 2.0
         }
     computed: {
@@ -106,6 +110,9 @@ module.exports = {
         volume: (val) ->
             if !isNaN(parseInt(val))
                 this.player.set(volume: val / 100) 
+        attack: (val) ->
+            if !isNaN(parseInt(val))
+                this.player.set(envelope: {attack: val}) 
         decay: (val) ->
             if !isNaN(parseInt(val))
                 this.player.set(envelope: {decay: val, release: val}) 
@@ -142,7 +149,7 @@ module.exports = {
 
         defaultEnv = {
             "envelope" : {
-                "attack" : 0.01,
+                "attack" : this.attack,
                 "decay" : this.decay,
                 "sustain" : 0.0,
                 "release" : this.decay,
