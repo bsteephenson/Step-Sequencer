@@ -1,6 +1,6 @@
 <template lang="pug">
     #app
-        h1 [Insert better name here]
+        h1 [ Insert better name here ]
         button(@click='togglePlay') Play / Stop
         button(@click='instruments++') Add Instrument
         label BPM: 
