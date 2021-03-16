@@ -11,7 +11,7 @@
   "dependencies": {
     "coffee-loader": "^0.7.2",
     "coffee-script": "^1.12.2",
-    "pug": "^2.0.0-beta6",
+    "pug": "^3.0.1",
     "pug-loader": "^2.3.0",
     "pug-walk": "^1.0.0",
     "stylus": "^0.54.5",
