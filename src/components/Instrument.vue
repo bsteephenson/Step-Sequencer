@@ -87,7 +87,7 @@ module.exports = {
             transpose: 0
             filterCutoff: 3000
             # reverbWet: 10
-            volume: 80
+            volume: 50
             attack: 0.01
             decay: 2.0
         }
