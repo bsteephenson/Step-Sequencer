@@ -17,10 +17,27 @@ div
             div
                 label Synth type: 
                 select(v-model="synth")
+                    option(disabled=true)
                     option sine
                     option sawtooth
                     option square
                     option triangle
+                    option(disabled=true)
+                    option sine4
+                    option sawtooth4
+                    option square4
+                    option triangle4
+                    option(disabled=true)
+                    option fmsine
+                    option fmsawtooth
+                    option fmsquare
+                    option fmtriangle
+                    option(disabled=true)
+                    option fatsine
+                    option fatsawtooth
+                    option fatsquare
+                    option fattriangle
+
             div
                 label Attack (seconds): 
                 input(type="text", v-model.number='attack')
@@ -70,7 +87,7 @@ module.exports = {
             transpose: 0
             filterCutoff: 3000
             # reverbWet: 10
-            volume: 100
+            volume: 50
             attack: 0.01
             decay: 2.0
         }
@@ -91,6 +108,8 @@ module.exports = {
                     type: val
                 }
             })
+            Tone.context.resume()
+            this.player.triggerAttackRelease("C4", "8n", "+0", this.volume / 100)
         transpose: (val) ->
             if isNaN(parseInt(val))
                 val = 0
@@ -100,7 +119,7 @@ module.exports = {
                 }
             })
         filterCutoff: (val) ->
-            if !isNaN(parseInt(val))
+            if !isNaN(parseInt(val)) && parseInt(val) > 0
                 this.filter.set({
                     frequency: val
                 })
@@ -123,6 +142,7 @@ module.exports = {
             self = this
             for pitch, onNotes of this.notes
                 if (this.currentStep in onNotes)
+                    Tone.context.resume()
                     this.player.triggerAttackRelease(pitch, "8n", "+0", this.volume / 100)
 
         handleToggleBox: (pitch, pos) ->
@@ -132,6 +152,7 @@ module.exports = {
                     this.notes[pitch].splice( index, 1 );
             else
                 this.notes[pitch].push(pos)
+                Tone.context.resume()
                 this.player.triggerAttackRelease(pitch, "8n", "+0", this.volume / 100)
 
     }

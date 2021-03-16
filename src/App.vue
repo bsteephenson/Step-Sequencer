@@ -30,7 +30,7 @@ module.exports = {
         res: 16
         isPlaying: false
         instruments: 1
-        bpm: 120
+        bpm: 80
     }
     methods: {
         nextTick: () ->
