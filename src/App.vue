@@ -1,13 +1,17 @@
 <template lang="pug">
     #app
-        h1 [ Insert better name here ]
+        h1 Music is fun
         button(@click='togglePlay') Play / Stop
         button(@click='instruments++') Add Instrument
         label BPM: 
         input(type="text" v-model.number='bpm')
+        label Min step resolution:
+        input(type="text" v-model.number='res')
+        label Global transpose:
+        input(type="text" v-model.number='globalTranspose')
         hr
 
-        instrument(v-for="i in instruments", :res = "res", :time = "time")
+        instrument(v-for="i in instruments", :res = "res", :time = "time", :globalTranspose = "globalTranspose")
         a(href="https://github.com/bsteephenson/Step-Sequencer") Source
 
 </template>
@@ -31,6 +35,7 @@ module.exports = {
         isPlaying: false
         instruments: 1
         bpm: 80
+        globalTranspose: 0
     }
     methods: {
         nextTick: () ->

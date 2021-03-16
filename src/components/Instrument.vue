@@ -68,7 +68,7 @@ module.exports = {
     components: {
         Hello, LineC
     },
-    props: ['time', 'res']
+    props: ['time', 'res', 'globalTranspose']
     data: () ->
         return {
             notes : {
@@ -87,7 +87,7 @@ module.exports = {
             transpose: 0
             filterCutoff: 3000
             # reverbWet: 10
-            volume: 50
+            volume: 80
             attack: 0.01
             decay: 2.0
         }
@@ -95,6 +95,8 @@ module.exports = {
         currentStep: () ->
             ticksPerStep = this.measures * this.res / this.steps
             return Math.floor(this.time / ticksPerStep) % this.steps
+        computedTranspose: () ->
+            return this.transpose + this.globalTranspose
     }
     watch: {
         currentStep: () ->
@@ -110,8 +112,8 @@ module.exports = {
             })
             Tone.context.resume()
             this.player.triggerAttackRelease("C4", "8n", "+0", this.volume / 100)
-        transpose: (val) ->
-            if isNaN(parseInt(val))
+        computedTranspose: (val) ->
+            if isNaN(val)
                 val = 0
             this.player.set({
                 oscillator: {
