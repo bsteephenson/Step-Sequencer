@@ -192,6 +192,12 @@ module.exports = {
         # this.reverb.connect(Tone.Master)
         this.player = synth
         this.player.set(volume: this.volume / 100)
+        
+        this.player.set({
+            oscillator: {
+                detune: this.computedTranspose * 100
+            }
+        })
 
 }
 </script>
